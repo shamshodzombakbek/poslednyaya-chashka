@@ -1,5 +1,9 @@
+.venv
+__pycache__
+save.json
+build
+.DS_Store
 node_modules
 dist
-.DS_Store
-*.local
 .vite
+*.local
