@@ -76,9 +76,11 @@ async def main() -> None:
                 running = False
             elif event.type == pygame.KEYDOWN:
                 held.add(event.scancode)
+                held_keys.add(event.key)
                 running = on_key(game, event, saved) and running
             elif event.type == pygame.KEYUP:
                 held.discard(event.scancode)
+                held_keys.discard(event.key)
             elif event.type in (
                 code
                 for code in (
@@ -88,13 +90,15 @@ async def main() -> None:
                 if code is not None
             ):
                 held.clear()
+                held_keys.clear()
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 on_click(game, event.pos, saved)
         if game.mode == "play":
             direction = 0
-            if held & LEFT_SCAN:
+            pressed = pygame.key.get_pressed()
+            if held & LEFT_SCAN or held_keys & LEFT_KEYS or pressed[pygame.K_LEFT] or pressed[pygame.K_a]:
                 direction -= 1
-            if held & RIGHT_SCAN:
+            if held & RIGHT_SCAN or held_keys & RIGHT_KEYS or pressed[pygame.K_RIGHT] or pressed[pygame.K_d]:
                 direction += 1
             game.move(direction, dt)
             game.tick(dt)
@@ -124,7 +128,10 @@ SCAN_RETURN = _scan("KSCAN_RETURN", 40)
 SCAN_SPACE = _scan("KSCAN_SPACE", 44)
 SCAN_ESCAPE = _scan("KSCAN_ESCAPE", 41)
 SCAN_C = _scan("KSCAN_C", 6)
+LEFT_KEYS = {pygame.K_LEFT, pygame.K_a}
+RIGHT_KEYS = {pygame.K_RIGHT, pygame.K_d}
 held: set[int] = set()
+held_keys: set[int] = set()
 
 
 def letter(event: pygame.event.Event) -> str:

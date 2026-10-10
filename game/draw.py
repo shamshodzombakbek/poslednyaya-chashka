@@ -101,9 +101,18 @@ def station_points(game: Game) -> list[tuple[str, float, float]]:
 
 def station_at(game: Game, mx: float, my: float) -> str | None:
     best = None
-    dist = 78
+    dist = 130
     for sid, sx, sy in station_points(game):
-        gap = math.hypot(mx - sx, my - sy)
+        for px, py in ((sx, sy), (sx, sy + 54)):
+            gap = math.hypot(mx - px, my - py)
+            if gap < dist:
+                dist = gap
+                best = sid
+    if best or my < 390:
+        return best
+    dist = 240
+    for sid, sx, _sy in station_points(game):
+        gap = abs(mx - sx)
         if gap < dist:
             dist = gap
             best = sid
@@ -343,7 +352,7 @@ def draw_sheet(surf: pygame.Surface, title: str, body: str) -> None:
 
 
 def draw_title(surf: pygame.Surface, game: Game) -> None:
-    draw_sheet(surf, "Последняя чашка", "Ты за стойкой. Гости подходят к окну, а ты двигаешься вдоль бара и собираешь чашку. Enter — начать смену.")
+    draw_sheet(surf, "Последняя чашка", "Ты за стойкой. Гости подходят к окну, а ты двигаешься вдоль бара и собираешь чашку. Нажми на экран или Enter — начать смену.")
 
 
 def draw_dialogue(surf: pygame.Surface, game: Game) -> None:
