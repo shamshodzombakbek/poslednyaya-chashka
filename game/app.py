@@ -68,6 +68,8 @@ async def main() -> None:
     clock = pygame.time.Clock()
     game = Game()
     saved = load_save()
+    if saved:
+        apply_save(game, saved)
     running = True
     while running:
         dt = min(0.05, clock.tick(60) / 1000)
@@ -154,12 +156,6 @@ def on_key(game: Game, event: pygame.event.Event, saved: dict | None) -> bool:
         elif game.mode == "pause":
             game.mode = "play"
         return True
-    if game.mode == "title" and is_confirm(event):
-        game.start()
-        return True
-    if game.mode == "intro" and (is_confirm(event) or is_use(event)):
-        game.begin_play()
-        return True
     if game.mode == "pause" and is_confirm(event):
         game.finish()
         write_save(game)
@@ -175,18 +171,10 @@ def on_key(game: Game, event: pygame.event.Event, saved: dict | None) -> bool:
         return True
     if is_use(event) and game.mode == "play":
         game.interact()
-    if (event.scancode == SCAN_C or letter(event) in ("c", "с")) and game.mode == "title" and saved:
-        apply_save(game, saved)
     return True
 
 
 def on_click(game: Game, pos: tuple[int, int], saved: dict | None) -> None:
-    if game.mode == "title":
-        game.start()
-        return
-    if game.mode == "intro":
-        game.begin_play()
-        return
     if game.mode == "report":
         game.next_day()
         return

@@ -130,11 +130,7 @@ def draw(surf: pygame.Surface, game: Game) -> None:
     draw_stations(surf, game)
     draw_hands(surf, game)
     draw_hud(surf, game)
-    if game.mode == "title":
-        draw_title(surf, game)
-    elif game.mode == "intro":
-        draw_sheet(surf, "У окна", "Люди подходят к стеклу. Стрелки влево и вправо — вдоль стойки. Клавиша E, на русской раскладке это У, делает то, что перед руками. 1–4 — выбрать чашку.")
-    elif game.mode == "dialogue" and game.dialogue:
+    if game.mode == "dialogue" and game.dialogue:
         draw_dialogue(surf, game)
     elif game.mode == "pause":
         draw_sheet(surf, "Пауза", "Esc — вернуться к стойке. Enter — закрыть смену.")
@@ -349,10 +345,6 @@ def draw_sheet(surf: pygame.Surface, title: str, body: str) -> None:
         else:
             line = trial
     text(surf, line, (270, y), 24)
-
-
-def draw_title(surf: pygame.Surface, game: Game) -> None:
-    draw_sheet(surf, "Последняя чашка", "Ты за стойкой. Гости подходят к окну, а ты двигаешься вдоль бара и собираешь чашку. Нажми на экран или Enter — начать смену.")
 
 
 def draw_dialogue(surf: pygame.Surface, game: Game) -> None:

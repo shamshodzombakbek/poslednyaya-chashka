@@ -33,7 +33,7 @@ class Customer:
 @dataclass
 class Game:
     rng: random.Random = field(default_factory=random.Random)
-    mode: str = "title"
+    mode: str = "play"
     day: int = 1
     minute: int = 8 * 60
     x: float = 3.55
@@ -51,7 +51,7 @@ class Game:
     order_recipe: str = ""
     order_uid: int = 0
     brewing: float = 0.0
-    spawn_in: float = 1.0
+    spawn_in: float = 0.4
     nina_for: float = 0.0
     interact_lock: float = 0.0
     intro_left: bool = True
