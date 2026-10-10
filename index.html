@@ -63,19 +63,7 @@ async def custom_site():
     # before a gesture is recorded ( touch or click )
 
     # test/wait user media interaction
-    if not platform.window.MM.UME:
-
-        # now that apk is mounted we have access to font cache
-        # but we need to fill __file__ that is not yet set
-        __import__(__name__).__file__ = main
-
-        # now make a prompt
-        msg  = "Нажмите на экран, чтобы начать"
-        platform.window.infobox.innerText = msg
-        print("\n"*4, f"    * Waiting for media user engagement. {msg} *" , "\n"*4)
-
-        while not platform.window.MM.UME:
-            await asyncio.sleep(.1)
+    __import__(__name__).__file__ = main
 
     # start async top level machinery if not started and add a console in any case if requested.
     await TopLevel_async_handler.start_toplevel(platform.shell, console=window.python.config.debug)
@@ -205,13 +193,12 @@ function show_infobox() {
         }
 
         #infobox {
-            position: fixed;
-            background: #f3ead8;
-            color: #2a241c;
+            position: fixed; /* center relative to viewport */
+            background: green;
+            color: blue;
             font-weight: bold;
-            font-size: 28px;
-            padding: 18px 28px;
-            border: 3px solid #2a241c;
+            padding: 12px 24px;
+ /*           display: none; */
             z-index: 999999;
         }
         div.emscripten { text-align: center; }
@@ -293,7 +280,7 @@ function show_infobox() {
 
     <div id="transfer" align=center>
 <!--        <div class="spinner" id='spinner'></div> -->
-        <div class="emscripten" id="status">Загрузка, подождите</div>
+        <div class="emscripten" id="status">Загрузка</div>
         <div class="emscripten">
             <progress value="0" max="100" id="progress"></progress>
         </div>
@@ -313,7 +300,7 @@ height="720px"
     oncontextmenu="event.preventDefault()" tabindex=1 hidden>
     </canvas>
 
-    <div id="infobox">Нажмите на экран</div>
+    <div id="infobox">Загрузка</div>
 
     <div id=html></div>
 
